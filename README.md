@@ -65,7 +65,7 @@ git push -u origin main
 6. **Contact** - Intelligent outreach & booking
 
 ## Obsidian Integration
-All content pulled from your D:\openclaw-brain vault including:
+All content pulled from your D:\northfield-brain vault including:
 - IDENTITY.md brand identity
 - agency-core-context.md philosophy
 - agency-offers.md service offerings
