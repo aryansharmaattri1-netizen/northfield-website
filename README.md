@@ -1,6 +1,6 @@
-# OpenClaw Agency Website
+# Northfield Agency Website
 
-High-conversion agency website built with Next.js, TypeScript, Tailwind CSS, and Framer Motion. Based on learnsales.us design patterns and incorporating OpenClaw brand identity, philosophy, service offerings, and content system.
+High-conversion agency website built with Next.js, TypeScript, Tailwind CSS, and Framer Motion. Based on learnsales.us design patterns and incorporating Northfield brand identity, philosophy, service offerings, and content system.
 
 ## Features
 
@@ -49,9 +49,9 @@ vercel
 ```bash
 git init
 git add .
-git commit -m "OpenClaw agency website"
+git commit -m "Northfield agency website"
 git branch -M main
-git remote add origin https://github.com/yourusername/openclaw-website
+git remote add origin https://github.com/yourusername/northfield-website
 git push -u origin main
 ```
 

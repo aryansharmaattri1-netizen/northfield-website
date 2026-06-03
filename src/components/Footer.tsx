@@ -41,7 +41,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  OpenClaw
+                  Northfield
                 </h3>
                 <p className="text-gray-400 text-sm font-medium">Clarity-Led Studio</p>
               </div>
@@ -142,7 +142,7 @@ export default function Footer() {
           className="mt-12 pt-8 border-t border-gray-800 flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0"
         >
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} OpenClaw — Clarity-Led Studio. All rights reserved.
+            © {new Date().getFullYear()} Northfield — Clarity-Led Studio. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm">
             "We believe in clarity over chaos. Authority over amplification."
