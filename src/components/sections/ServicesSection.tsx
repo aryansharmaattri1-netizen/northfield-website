@@ -8,7 +8,7 @@ const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-20%" },
-  transition: { duration: 0.75 },
+  transition: { duration: 0.75, ease: "easeOut" },
 };
 
 const services = [
@@ -44,6 +44,15 @@ const services = [
   },
 ];
 
+const BookCall = ({ children }: { children?: React.ReactNode }) => (
+  <a
+    href="#contact"
+    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-5 py-2.5 text-sm font-bold uppercase tracking-widest text-brand-black transition-all hover:bg-brand-gold-light hover:shadow-[0_0_30px_rgba(201,168,76,0.25)]"
+  >
+    {children ?? "Book a Call"}
+  </a>
+);
+
 export const ServicesSection = () => {
   return (
     <section id="service" className="relative py-24 md:py-32">
@@ -63,7 +72,7 @@ export const ServicesSection = () => {
         </motion.div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, idx) => (
+          {services.map((service) => (
             <motion.div
               key={service.title}
               {...fadeUp}
