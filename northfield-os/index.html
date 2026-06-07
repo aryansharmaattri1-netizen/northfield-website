@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NORTHFIELD OS - Agency Operating System">
+<title>NORTHFIELD OS</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ── BASE ────────────────────────────────────────────────────────── */
+:root {
+  --hue: 45;
+  --bg: #0a0a0c;
+  --bg-1: #0d0d10;
+  --bg-2: #111114;
+  --bg-3: #18181b;
+  --bg-4: #202024;
+  --border-1: #1f1f24;
+  --border-2: #2a2a30;
+  --border-3: #3a3a44;
+  --gold: #c9a23b;
+  --gold-bright: #e0b84d;
+  --gold-dim: rgba(201,162,59,0.12);
+  --gold-dim-2: rgba(201,162,59,0.06);
+  --ink: #ece8df;
+  --ink-fade: #9e9b96;
+  --ink-muted: #5f5c57;
+  --red: #e05252;
+  --red-dim: rgba(224,82,82,0.08);
+  --green: #42b883;
+  --green-dim: rgba(66,184,131,0.08);
+  --blue: #5e8fd6;
+  --blue-dim: rgba(94,143,214,0.08);
+  --purple: #9b8cca;
+  --orange: #d49655;
+  --sw: 264px;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 13.5px;
+  display: flex;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────────────── */
+#sb {
+  width: var(--sw);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: var(--bg-1);
+  border-right: 1px solid var(--border-1);
+  display: flex;
+  flex-direction: column;
+  z-index: 300;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#sb::-webkit-scrollbar { display: none; }
+
+.sbt {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--border-1);
+  background: var(--bg-1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  display: block;
+}
+
+.logsub {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 2.5px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.ng { padding: 2px 0; }
+
+.nh {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  padding: 14px 20px 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nh::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-1);
+}
+
+.ni {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 20px;
+  font-size: 12.5px;
+  color: var(--ink-fade);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.12s ease;
+  line-height: 1.35;
+  position: relative;
+}
+
+.ni:hover {
+  color: var(--ink);
+  background: var(--gold-dim-2);
+  border-left-color: var(--border-2);
+}
+
+.ni.on {
+  color: var(--gold-bright);
+  background: var(--gold-dim);
+  border-left-color: var(--gold);
+  font-weight: 600;
+}
+
+.ni::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s ease;
+}
+
+.ni.on::after { opacity: 0.5; transform: scale(1); }
+
+/* ── TOP BAR ─────────────────────────────────────────────────────── */
+.tb {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,12,0.96);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid var(--border-1);
+  height: 48px;
+  padding: 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tb-bc {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.tb-r { display: flex; gap: 10px; align-items: center; }
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.pill-gold {
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid rgba(201,162,59,0.18);
+}
+
+.pill-green {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(66,184,131,0.18);
+}
+
+/* ── MAIN CONTENT ────────────────────────────────────────────────── */
+#main { margin-left: var(--sw); flex: 1; min-height: 100vh; }
+
+.sec {
+  display: none;
+  padding: 40px 40px 100px;
+  max-width: 1200px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sec.on { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TYPOGRAPHY ──────────────────────────────────────────────────── */
+.ey {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.ey::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-1);
+}
+
+.big {
+  font-weight: 700;
+  font-size: 48px;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.big span, .big .accent { color: var(--gold-bright); }
+
+.st {
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.st .accent { color: var(--gold-bright); }
+
+.sub {
+  font-size: 13.5px;
+  color: var(--ink-fade);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+/* ── GRIDS ──────────────────────────────────────────────────────── */
+.g2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.g3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.g4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+/* ── CARDS ──────────────────────────────────────────────────────── */
+.c {
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  padding: 24px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.c:hover { border-color: var(--border-2); background: var(--bg-3); }
+
+.ct {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cg { border-left: 3px solid var(--gold); }
+.cgrn { border-left: 3px solid var(--green); }
+.cr { border-left: 3px solid var(--red); }
+.cb { border-left: 3px solid var(--blue); }
+.cp { border-left: 3px solid var(--purple); }
+.co { border-left: 3px solid var(--orange); }
+
+/* ── TAGS ────────────────────────────────────────────────────────── */
+.t {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.tg { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,59,0.15); }
+.tgrn { background: var(--green-dim); color: var(--green); border: 1px solid rgba(66,184,131,0.15); }
+.tr { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,82,82,0.15); }
+.tb { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(94,143,214,0.15); }
+
+/* ── ALERTS ──────────────────────────────────────────────────────── */
+.al {
+  padding: 14px 18px;
+  border-left: 3px solid;
+  margin: 16px 0;
+  font-size: 13px;
+  line-height: 1.75;
+  border-radius: 0 4px 4px 0;
+}
+
+.al strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.alg { background: var(--gold-dim-2); border-color: var(--gold); color: var(--ink-fade); }
+.alg strong { color: var(--gold-bright); }
+.alr { background: var(--red-dim); border-color: var(--red); color: var(--ink-fade); }
+.alr strong { color: var(--red); }
+.algn { background: var(--green-dim); border-color: var(--green); color: var(--ink-fade); }
+.algn strong { color: var(--green); }
+.alb { background: var(--blue-dim); border-color: var(--blue); color: var(--ink-fade); }
+.alb strong { color: var(--blue); }
+
+/* ── SECTION BOX ─────────────────────────────────────────────────── */
+.sc { background: var(--bg-3); border: 1px solid var(--border-1); border-left: 3px solid var(--border-2); padding: 16px 20px; margin: 12px 0; font-size: 13px; line-height: 1.8; color: var(--ink-fade); }
+.sc .lb { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 10px; font-weight: 500; }
+.sc strong { color: var(--gold-bright); font-weight: 600; }
+.sc em { color: var(--ink-muted); font-style: italic; }
+.sc.sgn { border-left-color: var(--green); }
+.sc.sr { border-left-color: var(--red); }
+.sc.sb { border-left-color: var(--blue); }
+
+/* ── TABLES ──────────────────────────────────────────────────────── */
+.tw { overflow-x: auto; margin: 16px 0; }
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-1);
+  background: var(--bg-3);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+td { padding: 10px 16px; border-bottom: 1px solid var(--border-1); color: var(--ink-fade); font-size: 13px; vertical-align: top; line-height: 1.6; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--gold-dim-2); color: var(--ink); }
+
+/* ── STEPS ───────────────────────────────────────────────────────── */
+.step {
+  display: flex;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-1);
+}
+
+.step:last-child { border-bottom: none; }
+
+.sn {
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--border-2);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 32px;
+}
+
+.sb2 .stitle { font-weight: 600; font-size: 13.5px; color: var(--ink); margin-bottom: 5px; }
+.sb2 .sdesc { color: var(--ink-fade); font-size: 13px; line-height: 1.75; }
+
+/* ── CHECKLIST ───────────────────────────────────────────────────── */
+.cl { list-style: none; }
+.cl li {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-1);
+  font-size: 13px;
+  color: var(--ink-fade);
+  line-height: 1.7;
+  align-items: flex-start;
+}
+
+.cl li:last-child { border-bottom: none; }
+.cl li::before { content: ''; width: 14px; height: 14px; border: 1.5px solid var(--border-3); border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+.cl li strong { color: var(--ink); display: block; margin-bottom: 1px; font-weight: 600; }
+
+/* ── METRICS ─────────────────────────────────────────────────────── */
+.met { background: var(--bg-2); border: 1px solid var(--border-1); padding: 20px; text-align: center; transition: border-color 0.2s; }
+.met:hover { border-color: var(--border-2); }
+
+.mv { font-weight: 700; font-size: 40px; color: var(--gold-bright); line-height: 1; margin-bottom: 5px; letter-spacing: -0.02em; }
+.ml { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; color: var(--ink-muted); text-transform: uppercase; }
+
+/* ── DAY BLOCKS ──────────────────────────────────────────────────── */
+.day-block { background: var(--bg-2); border: 1px solid var(--border-1); margin-bottom: 3px; overflow: hidden; transition: border-color 0.2s; }
+.day-block:hover { border-color: var(--border-2); }
+
+.day-hd {
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border-1);
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.day-hd:hover { background: var(--bg-4); }
+
+.day-num { font-weight: 700; font-size: 26px; color: var(--gold); line-height: 1; letter-spacing: -0.02em; }
+.day-title { font-weight: 600; font-size: 14px; color: var(--ink); }
+.day-goal { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1px; }
+
+.day-bd { padding: 0 22px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.day-bd.open { max-height: 8000px; padding: 22px; }
+
+.hblock { background: var(--bg-3); border: 1px solid var(--border-1); padding: 16px 20px; margin-bottom: 10px; }
+.hb-time { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1px; color: var(--gold-bright); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.hb-time::after { content: ''; flex: 1; height: 1px; background: var(--border-1); }
+
+.hb-tasks { font-size: 13px; color: var(--ink-fade); line-height: 1.75; list-style: none; }
+.hb-tasks li { margin-bottom: 5px; display: flex; align-items: flex-start; gap: 10px; }
+.hb-tasks li::before { content: ''; flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 7px; }
+
+/* ── OBJECTIVE BLOCKS ────────────────────────────────────────────── */
+.obj { margin-bottom: 12px; }
+.oq { background: var(--red-dim); border: 1px solid rgba(224,82,82,0.12); padding: 12px 16px; border-radius: 3px 3px 0 0; font-size: 13px; color: var(--ink); font-weight: 600; }
+.oa { background: var(--bg-3); border: 1px solid var(--border-1); border-top: none; padding: 14px 16px; border-radius: 0 0 3px 3px; font-size: 13px; color: var(--ink-fade); line-height: 1.75; }
+
+/* ── TIMELINE ────────────────────────────────────────────────────── */
+.tl-item { display: grid; grid-template-columns: 78px 1px 1fr; gap: 0 20px; padding-bottom: 24px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-day { font-family: var(--font-mono); font-size: 9.5px; color: var(--gold); text-align: right; padding-top: 2px; letter-spacing: 1px; }
+.tl-line { background: var(--border-1); position: relative; margin: 0 auto; }
+.tl-line::before { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--gold); border-radius: 50%; border: 2px solid var(--bg); }
+.tl-title { font-weight: 600; color: var(--ink); font-size: 13.5px; margin-bottom: 5px; }
+.tl-desc { color: var(--ink-fade); font-size: 12.5px; line-height: 1.7; }
+
+/* ── FLOW ─────────────────────────────────────────────────────────── */
+.flow { display: flex; flex-direction: column; gap: 2px; margin: 16px 0; }
+.fs { background: var(--bg-3); border: 1px solid var(--border-1); padding: 14px 20px; display: flex; align-items: center; gap: 16px; transition: border-color 0.2s; }
+.fs:hover { border-color: var(--border-2); }
+.fs.fh { border-left: 3px solid var(--green); }
+
+.fi { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
+.fl2 { flex: 1; }
+.ft { font-weight: 600; font-size: 13.5px; color: var(--ink); margin-bottom: 2px; }
+.fd { font-size: 12px; color: var(--ink-fade); }
+
+.fr2 {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1.2px;
+  color: var(--gold);
+  flex-shrink: 0;
+  text-align: right;
+  background: var(--gold-dim);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+.farr { text-align: center; color: var(--ink-muted); padding: 3px 0; font-size: 14px; }
+
+/* ── FEAR LOOM ───────────────────────────────────────────────────── */
+.fear-block { background: var(--bg-3); border: 1px solid var(--border-1); border-left: 3px solid var(--red); padding: 20px 24px; margin: 12px 0; transition: border-color 0.2s; }
+.fear-block:hover { border-color: var(--border-2); }
+
+.fb-phase { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2.5px; color: var(--red); text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+.fb-title { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 10px; }
+.fb-body { font-size: 13px; color: var(--ink-fade); line-height: 1.75; }
+
+/* ── NUMBER LABELS ───────────────────────────────────────────────── */
+.nl { display: flex; gap: 2px; margin: 18px 0; }
+.nl-b {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.nl-b:hover { border-color: var(--border-2); background: var(--bg-3); }
+
+.nl-v { font-weight: 700; font-size: 32px; color: var(--gold-bright); line-height: 1; letter-spacing: -0.02em; }
+.nl-l { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; color: var(--ink-muted); text-transform: uppercase; margin-top: 4px; }
+
+/* ── IDEA CARDS ──────────────────────────────────────────────────── */
+.idea-card { background: var(--bg-3); border: 1px solid var(--border-1); border-left: 3px solid var(--gold); padding: 18px 20px; margin-bottom: 10px; transition: border-color 0.2s, background 0.2s; }
+.idea-card:hover { border-color: var(--border-2); background: var(--bg-4); }
+.idea-card.bl { border-left-color: var(--blue); }
+.idea-card.pu { border-left-color: var(--purple); }
+.idea-card.or { border-left-color: var(--orange); }
+
+.ic-n { font-weight: 700; font-size: 20px; color: var(--gold); margin-bottom: 7px; letter-spacing: -0.02em; }
+.ic-hook { font-weight: 600; font-size: 13.5px; color: var(--ink); margin-bottom: 7px; line-height: 1.4; }
+.ic-body { font-size: 12.5px; color: var(--ink-fade); line-height: 1.75; }
+
+/* ── WEEK LABELS ─────────────────────────────────────────────────── */
+.week-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  padding: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 500;
+}
+
+.week-label::after { content: ''; flex: 1; height: 1px; background: var(--border-1); }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #sb { transform: translateX(-100%); transition: transform 0.3s ease; }
+  #sb.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  .big { font-size: 36px; }
+  .st { font-size: 28px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .sec { padding: 24px 20px 60px; }
+  .big { font-size: 28px; }
+  .st { font-size: 22px; }
+  .nl { flex-wrap: wrap; }
+  .nl-b { flex: 1 1 48%; }
+  .tb { padding: 0 20px; }
+}
+
+/* ── REDUCED MOTION ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sec { animation: none; }
+  .day-bd { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sbt">
+    <span class="logo">NORTHFIELD</span>
+    <span class="logsub">Operating System</span>
+  </div>
+  <div class="ng">
+    <div class="nh">Foundation</div>
+    <div class="ni on" data-key="home"><span class="ni-i">CC</span>Command Center</div>
+    <div class="ni" data-key="vision"><span class="ni-i">V</span>The Vision</div>
+    <div class="ni" data-key="offer"><span class="ni-i">O</span>The Offer</div>
+    <div class="nh">30-Day War Plan</div>
+    <div class="ni" data-key="war"><span class="ni-i">W</span>Day-by-Day</div>
+    <div class="nh">Content Engine</div>
+    <div class="ni" data-key="content"><span class="ni-i">R</span>Reel System</div>
+    <div class="ni" data-key="ideas"><span class="ni-i">I</span>Content Ideas</div>
+    <div class="nh">Outreach</div>
+    <div class="ni" data-key="outreach"><span class="ni-i">V</span>Voice Flow</div>
+    <div class="ni" data-key="loom"><span class="ni-i">L</span>The Fear Loom</div>
+    <div class="nh">Sales</div>
+    <div class="ni" data-key="discovery"><span class="ni-i">D</span>Discovery Call</div>
+    <div class="ni" data-key="objections"><span class="ni-i">N</span>Objections</div>
+    <div class="ni" data-key="close"><span class="ni-i">C</span>The Close</div>
+    <div class="ni" data-key="saleslearn"><span class="ni-i">S</span>Sales Learning</div>
+    <div class="nh">Systems</div>
+    <div class="ni" data-key="setup"><span class="ni-i">F</span>Fast Setup</div>
+    <div class="ni" data-key="auto"><span class="ni-i">A</span>Automation</div>
+    <div class="ni" data-key="onboard"><span class="ni-i">B</span>Onboarding</div>
+    <div class="nh">Team + Delivery</div>
+    <div class="ni" data-key="hiring"><span class="ni-i">H</span>Hiring System</div>
+    <div class="ni" data-key="delivery"><span class="ni-i">M</span>Delivery OS</div>
+    <div class="ni" data-key="daily"><span class="ni-i">E</span>Daily Rules</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+  <div class="tb">
+    <span class="tb-bc" id="bc">NORTHFIELD OS / COMMAND CENTER</span>
+    <div class="tb-r">
+      <span class="pill pill-gold">ZERO TO $30K MRR</span>
+      <span class="pill pill-green">90 DAYS</span>
+    </div>
+  </div>
+
+  <!-- COMMAND CENTER -->
+  <div class="sec on" id="sec-home">
+    <div class="ey">Northfield OS</div>
+    <div class="big">THIS IS THE LAST<br><span class="accent">PLAN YOU MAKE.</span></div>
+    <p class="sub">No more building documents. No more planning. What follows is the exact operating system - daily hours, exact tasks, word-for-word scripts, real hiring process, and the vision you are executing toward. You open this. You execute. You close clients.</p>
+    <div class="g4" style="margin-bottom:2px">
+      <div class="met"><div class="mv">$0</div><div class="ml">Current MRR</div></div>
+      <div class="met"><div class="mv">$30K</div><div class="ml">90-Day Target</div></div>
+      <div class="met"><div class="mv">$1M</div><div class="ml">12-Month Vision</div></div>
+      <div class="met"><div class="mv">Day 1</div><div class="ml">Start Now</div></div>
+    </div>
+    <div class="al alr"><strong>The Honest Diagnosis</strong>The bottleneck is not ideas. Not scripts. Not knowledge. It is execution - sitting down and doing the next step without needing another plan. This document gives you the next step every single day for 30 days. Your job is to stop reading and start doing.</div>
+    <div class="g3">
+      <div class="c cg"><div class="ct">Why You Are Hiring First</div><p style="color:var(--ink-fade);font-size:13px;line-height:1.75">Most agencies get stuck at $10-15K MRR because the founder is doing editing. Editing is the most time-consuming, least strategic task. The moment your first client pays - that money hires an editor. You immediately become a creative director, not an executor. Your job is strategy, sales, client relationships. The editor does the reps.</p></div>
+      <div class="c cgrn"><div class="ct">The Commission Model</div><p style="color:var(--ink-fade);font-size:13px;line-height:1.75">After 4-5 clients with real case studies, you move upmarket. $25K-$50K/month retainers with a performance commission on growth you generate. 10-20% of what you help them earn extra. 10 clients at $25K = $250K/month base. Plus commission on growth. This is the path to $1M/month.</p></div>
+      <div class="c cb"><div class="ct">The Two Numbers That Matter Now</div><p style="color:var(--ink-fade);font-size:13px;line-height:1.75">Number 1: Qualified conversations started today. Target: 5+. Number 2: Reels posted this week. Target: 3-4. If both are moving - you are on track. If either is zero - nothing else matters. Not systems, not documents, not planning.</p></div>
+    </div>
+  </div>
+
+  <!-- VISION -->
+  <div class="sec" id="sec-vision">
+    <div class="ey">The Full Picture</div>
+    <div class="st">THE <span class="accent">$1M VISION</span></div>
+    <p class="sub">Not aspirational. Mechanical. Here is exactly how Northfield scales to $1M/month using leverage, commission, and a lean team model.</p>
+    <div class="tw" style="margin-bottom:2px"><table>
+      <tr><th>Stage</th><th>Clients</th><th>Retainer</th><th>MRR</th><th>Team</th><th>Your Role</th></tr>
+      <tr><td><strong style="color:var(--gold)">Month 1-3</strong></td><td>1-3</td><td>$5K-$10K</td><td>$5K-$30K</td><td>1 editor (hired Day 1 of first client)</td><td>Strategy + Sales + Creative Direction</td></tr>
+      <tr><td><strong style="color:var(--gold)">Month 4-6</strong></td><td>4-6</td><td>$8K-$15K</td><td>$32K-$90K</td><td>2 editors + 1 writer</td><td>Sales + Strategy + Key Client Relationships</td></tr>
+      <tr><td><strong style="color:var(--gold)">Month 7-12</strong></td><td>6-10</td><td>$15K-$50K</td><td>$90K-$500K</td><td>Editors + Writers + 1 Creative Director</td><td>Vision + Sales + Top 2-3 Clients</td></tr>
+      <tr><td><strong style="color:var(--gold)">Year 2+</strong></td><td>8-12</td><td>$25K-$50K + commission</td><td>$250K-$1M+</td><td>Full delivery team</td><td>Commission strategy + Network</td></tr>
+    </table></div>
+    <div class="g2">
+      <div class="c cg">
+        <div class="ct">The Commission Model - How $1M/Month Works</div>
+        <p style="color:var(--ink-fade);font-size:13px;line-height:1.75;margin-bottom:14px">You are not charging for content. You are charging for growth you generate.</p>
+        <div class="sc sgn"><span class="lb">The Math</span>Client pays $25K/month retainer.<br>You help them generate $500K additional revenue per month.<br>You charge 15% commission = $75K/month from that client.<br>Total from 1 client: $25K retainer + $75K commission = <strong>$100K/month.</strong><br><br>10 clients on this model = <strong>$1M/month.</strong><br>You spend 60% on the team. You keep 40% = $400K/month personal revenue.</div>
+        <div class="al alg"><strong>The Path to Get There</strong>4-5 clients with real data - case studies prove ROI - use ROI data to justify commission model - move upmarket - never go back to hourly or deliverable pricing again.</div>
+      </div>
+      <div class="c cr">
+        <div class="ct">Pricing Progression - Never Drop Below This</div>
+        <div class="nl">
+          <div class="nl-b"><div class="nl-v">$5K</div><div class="nl-l">Entry - Client 1-2</div></div>
+          <div class="nl-b"><div class="nl-v">$8K</div><div class="nl-l">Client 3-4</div></div>
+          <div class="nl-b"><div class="nl-v">$15K</div><div class="nl-l">Client 5+</div></div>
+          <div class="nl-b"><div class="nl-v">$25K+</div><div class="nl-l">Commission Era</div></div>
+        </div>
+        <div class="al alr"><strong>The Floor</strong>$4,500 is the absolute minimum you accept. Never go below this for any reason. If a client can't pay $4,500/month for a content system that could generate $50K+/month for their business - they are not the right client. Walk away cleanly.</div>
+      </div>
+    </div>
+    <div class="c">
+      <div class="ct">What Northfield Actually Sells - Outcomes, Not Deliverables</div>
+      <div class="g2" style="margin-bottom:0">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--red);margin-bottom:12px">WRONG - WHAT AGENCIES SAY</div>
+          <ul class="cl">
+            <li><div>"12 Reels and 4 Carousels per month"</div></li>
+            <li><div>"Consistent posting schedule"</div></li>
+            <li><div>"Edited videos delivered in 48 hours"</div></li>
+            <li><div>"Social media management"</div></li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--green);margin-bottom:12px">RIGHT - WHAT NORTHFIELD SAYS</div>
+          <ul class="cl">
+            <li><div>"Your online presence will match your offline authority in 90 days"</div></li>
+            <li><div>"The right people will find you, feel it, and reach out"</div></li>
+            <li><div>"Your content will generate deals you never knew were possible"</div></li>
+            <li><div>"You record once a month. Everything else is handled."</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFER -->
+  <div class="sec" id="sec-offer">
+    <div class="ey">Phase 1 - Days 1-2</div>
+    <div class="st">THE OFFER - <span class="accent">RESULT FIRST</span></div>
+    <p class="sub">Two tiers. Both result-led. The deliverables are secondary context - the outcome is what you sell.</p>
+    <div class="g2" style="margin-bottom:2px">
+      <div class="c cg">
+        <div style="display:flex;gap:10px;margin-bottom:18px"><span class="t tg">Entry</span><span class="t tgrn">Partner Model</span></div>
+        <div style="font-weight:700;font-size:28px;color:var(--ink);letter-spacing:-0.02em;margin-bottom:6px">AUTHORITY SYSTEM</div>
+        <div style="font-size:13px;color:var(--ink-fade);margin-bottom:20px">90 days. Your content matches who you actually are.</div>
+        <div style="font-weight:700;font-size:52px;color:var(--gold-bright);line-height:1;margin-bottom:6px">$5,000</div>
+        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--ink-muted);letter-spacing:1px">per month / 3-month minimum / $15,000 total</div>
+        <hr style="border:none;border-top:1px solid var(--border-1);margin:22px 0">
+        <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">THE OUTCOME</div>
+        <p style="color:var(--ink-fade);font-size:13px;line-height:1.75">In 90 days, when your ideal client searches for you - or stumbles onto your content - they feel something. Relief. Recognition. "This person gets it." They reach out. You didn't post more. You posted smarter. Your authority is finally visible.</p>
+        <hr style="border:none;border-top:1px solid var(--border-1);margin:18px 0">
+        <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--ink-muted);margin-bottom:12px">WHAT THIS INCLUDES (SECONDARY)</div>
+        <ul class="cl">
+          <li><div>Full content strategy + pillar architecture</div></li>
+          <li><div>20-30 short-form Reels/month (scripted + edited)</div></li>
+          <li><div>4-6 long-form YouTube repurposes OR carousels</div></li>
+          <li><div>Hook engineering + retention strategy per video</div></li>
+          <li><div>Caption writing + posting + scheduling</div></li>
+          <li><div>Monthly analytics + strategy report</div></li>
+          <li><div>2 quick calls/week (10-15 min) + 1 monthly deep call (45 min)</div></li>
+        </ul>
+      </div>
+      <div class="c cb">
+        <div style="display:flex;gap:10px;margin-bottom:18px"><span class="t tb">Growth Tier</span><span class="t tg">Full System</span></div>
+        <div style="font-weight:700;font-size:28px;color:var(--ink);letter-spacing:-0.02em;margin-bottom:6px">AUTHORITY BUILD</div>
+        <div style="font-size:13px;color:var(--ink-fade);margin-bottom:20px">90 days. Full content ecosystem built. Pipeline created.</div>
+        <div style="font-weight:700;font-size:52px;color:var(--gold-bright);line-height:1;margin-bottom:6px">$10,000</div>
+        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--ink-muted);letter-spacing:1px">per month / 3-month minimum / $30,000 total</div>
+        <hr style="border:none;border-top:1px solid var(--border-1);margin:22px 0">
+        <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">THE OUTCOME</div>
+        <p style="color:var(--ink-fade);font-size:13px;line-height:1.75">In 90 days, your content is a business asset - not a vanity metric. Inbound leads from your content. Deal flow improved by your visibility. Partners and talent attracted by your online authority. You have built something that compounds while you sleep.</p>
+        <hr style="border:none;border-top:1px solid var(--border-1);margin:18px 0">
+        <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--ink-muted);margin-bottom:12px">EVERYTHING IN ENTRY + ABOVE</div>
+        <ul class="cl">
+          <li><div>Full YouTube channel strategy + video production</div></li>
+          <li><div>LinkedIn content system (posts + articles)</div></li>
+          <li><div>Email newsletter strategy + first 4 issues</div></li>
+          <li><div>DM sales funnel built (content to DM to close)</div></li>
+          <li><div>Brand voice guide + competitor positioning</div></li>
+          <li><div>Dedicated editor assigned to their account only</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="c">
+      <div class="ct">How to Present the Offer (The Frame)</div>
+      <div class="sc sgn"><span class="lb">In a discovery call - say this</span>"We do not work like other agencies. We do not give you a list of deliverables and call it a strategy. We build a content system around your expertise that makes your online presence match your offline authority - in 90 days. The content is the vehicle. The outcome is what you are actually paying for.<br><br>Here is what your investment looks like: [state the number]. That covers the full system - strategy, production, everything. Your job is showing up on camera once a month. Everything else is handled."</div>
+    </div>
+  </div>
+
+  <!-- 30-DAY WAR PLAN -->
+  <div class="sec" id="sec-war">
+    <div class="ey">The Non-Negotiable</div>
+    <div class="st">30-DAY <span class="accent">WAR PLAN</span></div>
+    <p class="sub">Each day has a minimum of 6 hours of intentional work. Exact tasks, exact hours, exact outputs. No generic placeholders. This is what you actually do - start to finish.</p>
+    <div class="al alr"><strong>The Rule</strong>You do not skip days. You do not "rest and restart Monday." Each day's output feeds the next. Missing Day 5 means Day 6 starts behind. The plan only works if you execute it as written.</div>
+
+    <div class="week-label">Week 1 - Build the Foundation</div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 1</div><div class="day-title">Profile Locked + First 2 Reels Filmed</div></div>
+        <span class="t tg">Output: Profile live, 2 reels in edit</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1-2 - Profile Optimization</div><ul class="hb-tasks">
+          <li>Bio written: Line 1 = "I build content systems for founders who already win." Line 2 = "Your thinking is elite. Your content should reflect it." Line 3 = "Founder @ Northfield" Line 4 = "Free audit call" + Calendly link</li>
+          <li>Profile photo: dark background, direct eye contact, lapel mic not visible, ring light 45 above. Shot now. No excuses.</li>
+          <li>Three Highlights created in IG: "Process" | "Results" | "About" - basic covers, just colored, does not need Canva</li>
+          <li>Name field updated: "Aryan / Content Strategy / Founders"</li>
+          <li>Calendly booked: "Content Audit Call" 30 min. Connected to calendar.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 3-4 - Script Reels 1 + 2</div><ul class="hb-tasks">
+          <li>Reel 1 script: "The most dangerous thing a winning founder can do - stay invisible online." Full script. Write it out by hand or type it. Read it aloud 3x until it sounds like conversation.</li>
+          <li>Reel 2 script: "Stop posting more. You are making your brand worse every time you post without a strategy." Full script. Same process.</li>
+          <li>For each reel: write the visual hook for frame 1. Write the caption. Write the CTA.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 5-6 - Film + Light Edit Both Reels</div><ul class="hb-tasks">
+          <li>Set up: dark background, ring light, lapel mic, phone on tripod. Takes 10 minutes max.</li>
+          <li>Film Reel 1: 3 takes. Best take is usually take 2 or 3 when you have relaxed into it. Keep all takes.</li>
+          <li>Film Reel 2: same.</li>
+          <li>Quick edit both in CapCut: cut filler words, add text overlay frame 1, add auto-captions, color grade. Max 30 minutes per reel.</li>
+          <li>Both reels saved as drafts in Instagram. Do not post yet.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Day 1</strong>Profile is live and looks real. Two reels are drafted. Calendly is live. Tomorrow you start outreach research.</div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 2</div><div class="day-title">Post Reel 1 + Notion + Contract + 15 Leads Found</div></div>
+        <span class="t tg">Output: Reel 1 live, CRM built, first leads identified</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1 - Post Reel 1</div><ul class="hb-tasks">
+          <li>Post Reel 1 at 6:30 PM IST or first thing in morning if timezone allows. Caption ready from yesterday.</li>
+          <li>Reply to every comment within the first hour. Even if 0 comments - check every 30 minutes.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 2-3 - Systems Setup (Fast)</div><ul class="hb-tasks">
+          <li>Notion: Create "Lead Tracker" database. Properties: Name, Handle, Platform, Revenue Signal, Touch 1-5 dates, Status, Notes. Done in 20 minutes.</li>
+          <li>Google Drive: Create folder "Northfield Clients." Inside: Template folder with subfolders Raw / Edited / Approved / Posted. Done in 5 minutes.</li>
+          <li>PandaDoc free trial: Create account. Build contract template with 8 clauses. Done in 30 minutes.</li>
+          <li>Stripe: Create account. Set up USD payments. Done in 20 minutes.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 4-5 - Lead Research (15 Leads)</div><ul class="hb-tasks">
+          <li>Open Instagram. Search: "founder" + [niche]. Find 10 accounts: 2K-200K followers, active, revenue signal visible, content quality mismatch. Add each to Notion tracker.</li>
+          <li>Open LinkedIn. Search "Founder" + "CEO" + industry keywords. Find 5 more. Note their Instagram handle in Notion.</li>
+          <li>For each lead, write 1 sentence in Notes: "Biggest content problem I see." This is the personalization you need for the voice DM.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 6 - Script Reels 3 + 4</div><ul class="hb-tasks">
+          <li>Reel 3: "I audited 50 founder Instagram pages. Same problem was killing almost all of them."</li>
+          <li>Reel 4: "The 3-second rule that decides whether your video lives or dies."</li>
+          <li>Write both scripts fully. Read aloud. Refine until natural.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Day 2</strong>Reel 1 live. Notion CRM built. Contract template exists. 15 leads identified and researched. Two more reels scripted.</div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 3</div><div class="day-title">Post Reel 2 + Film 3+4 + First 5 Voice DMs</div></div>
+        <span class="t tg">Output: 2 reels live, voice DMs sent</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1 - Post Reel 2</div><ul class="hb-tasks"><li>Post Reel 2. Reply to all Reel 1 comments from yesterday.</li></ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 2-4 - Film + Edit Reels 3 + 4</div><ul class="hb-tasks">
+          <li>Film both reels (same setup). 3 takes each. Edit both in CapCut (30 min each). Save as Instagram drafts.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 5-6 - First Voice DMs</div><ul class="hb-tasks">
+          <li>Pick the 5 warmest leads from your Day 2 research (strongest revenue signal + clearest content problem).</li>
+          <li>For each: leave a genuine comment on their most recent post first. Not "great post" - a real observation.</li>
+          <li>Then send a voice DM: 25-35 seconds. Open with their name. Reference something specific from their page. State one observation. End with a question.</li>
+          <li>After each voice DM: note "Touch 1 Comment" + "Touch 2 Voice DM" in Notion tracker with today's date.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Day 3</strong>4 reels created (2 live, 2 in drafts). First 5 voice DMs sent. Outreach machine is officially running.</div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 4</div><div class="day-title">Post Reel 3 + Script/Film Reels 5+6 + 10 More Leads</div></div>
+        <span class="t tg">Output: 3 reels live, outreach expanding</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1 - Post + Reply</div><ul class="hb-tasks"><li>Post Reel 3. Reply to all comments on Reels 1 and 2.</li></ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 2-3 - Follow-Up Day 3 Voice DMs</div><ul class="hb-tasks">
+          <li>Check if anyone replied to voice DMs. If yes: continue the conversation. Keep it warm, observational. Not salesy.</li>
+          <li>If no reply: leave it. Do not follow up yet. Day 4 is too early for a second touch.</li>
+          <li>Find 10 NEW leads. Add to Notion. Write their 1-sentence problem in Notes.</li>
+          <li>Leave comments on 5 of the 10 new leads (Touch 1).</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 4-6 - Reels 5 + 6</div><ul class="hb-tasks">
+          <li>Script: Reel 5 = "The 5-part structure behind every piece of content that converts." Reel 6 = "How I turn 60 minutes of a founder's time into 30 days of authority content."</li>
+          <li>Film both. Edit both. Save as drafts.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 5</div><div class="day-title">Post Reel 4 + First Looms + Text DMs to Voice DM Leads</div></div>
+        <span class="t tg">Output: 4 reels live, first Looms sent</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1 - Post + Reply</div><ul class="hb-tasks"><li>Post Reel 4. Reply to all comments.</li></ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 2 - Text DM Follow-Up (Day 3 Voice DMs)</div><ul class="hb-tasks">
+          <li>For leads who received voice DMs on Day 3 but have not replied: send a short text follow-up DM. "Sent a quick voice message a couple days ago - just wanted to make sure it landed. Is this something on your radar?"</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 3-5 - Record 2 Looms</div><ul class="hb-tasks">
+          <li>Pick the 2 most responsive or highest-quality leads from your research. For each: do 10-min research. Record a 3-4 minute Loom audit. Fear framework. Three observations. One recommendation. No pitch.</li>
+          <li>Send Loom to each lead via DM: "[Name] - recorded a 4-minute breakdown of your page. Three things I noticed, one recommendation. No pitch inside."</li>
+          <li>Find and comment on 5 new leads (Touch 1).</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 6 - Voice DMs to 5 New Leads</div><ul class="hb-tasks">
+          <li>Send voice DMs to the 5 leads you commented on today (Day 4's Touch 1 leads). Personalized to each using your Notion notes.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Day 5</strong>4 reels live. 2 Looms sent. Voice DM pipeline expanding. You now have 10+ conversations at various stages in your Notion CRM.</div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 6</div><div class="day-title">Post Reel 5 + Research Loom Responses + 10 More Leads</div></div>
+        <span class="t tg">Output: 5 reels live, conversations heating up</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1-2 - Post + Manage Conversations</div><ul class="hb-tasks">
+          <li>Post Reel 5. Reply to all comments.</li>
+          <li>Check all Loom responses. If they responded: continue the conversation.</li>
+          <li>Reply to any voice DM responses with a continuation message.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 3-4 - 10 New Leads</div><ul class="hb-tasks">
+          <li>Find 10 new qualified leads. Add to Notion. Write their problem in Notes. Leave comments on 5 of them.</li>
+          <li>Send voice DMs to the 5 you commented on yesterday (Day 5's Touch 1 leads).</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 5-6 - Sales Learning</div><ul class="hb-tasks">
+          <li>Watch Alex Hormozi "$100M Offers" - specifically the "value equation" and "outcome framing" sections. Take notes on 3 key takeaways.</li>
+          <li>Read through the Discovery Call script once. Out loud. Get familiar with the flow.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAY 7</div><div class="day-title">Post Reel 6 + Review Week 1 + Prepare Week 2</div></div>
+        <span class="t tg">Output: 6 reels live, first discovery call being booked</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">HOUR 1 - Post Reel 6</div><ul class="hb-tasks"><li>Post Reel 6 ("1 spot available this month" - see Content section). This is your first direct invitation. By now you have 5 authority reels behind it.</li></ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 2-3 - Outreach Machine</div><ul class="hb-tasks">
+          <li>Follow up on all Loom recipients who have not responded.</li>
+          <li>Continue voice DM pipeline to 5 new leads.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 4-5 - Week 1 Review</div><ul class="hb-tasks">
+          <li>Open Notion. Count: Total leads found. Total voice DMs sent. Total Looms sent. Total replies received. Total conversations active.</li>
+          <li>Check Reel analytics: which performed best? Why? Note the hook type that got the most views.</li>
+          <li>Adjust Week 2 plan based on what is working in outreach.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">HOUR 6 - Sales Learning</div><ul class="hb-tasks">
+          <li>Watch Chris Voss "Never Split the Difference" clips (YouTube). Focus on: calibrated questions and tactical empathy.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Week 1</strong>6 reels live on your profile. 30+ leads in Notion tracker. 10+ Looms sent. 5+ active conversations. First discovery call should be booked or close to booking by now.</div>
+      </div>
+    </div>
+
+    <div class="week-label">Week 2 - First Discovery Calls + Close First Client</div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAYS 8-10</div><div class="day-title">Discovery Calls + Daily Outreach + Continue Reels</div></div>
+        <span class="t tb">Output: 2-3 discovery calls completed, proposal sent</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">DAILY STRUCTURE - HOURS 1-2</div><ul class="hb-tasks">
+          <li>Outreach morning block: Reply to all active DMs. Send 5 new voice DMs. Follow up on all Day 5-7 leads with next touch.</li>
+          <li>Find 10 new leads (keep pipeline full even while closing).</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">DAILY STRUCTURE - HOURS 3-4</div><ul class="hb-tasks">
+          <li>Film + edit 1 new reel per day (minimum). 15-20 minutes for filming. 15-20 minutes for editing.</li>
+          <li>Post one reel per day at 6:30 PM IST. Reply to all comments within 1 hour of posting.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">DAILY STRUCTURE - HOURS 5-6</div><ul class="hb-tasks">
+          <li>Discovery calls if booked. Use the full discovery call script. Record every call for review.</li>
+          <li>If no call scheduled: watch 1 hour of sales content from the learning stack.</li>
+          <li>After any discovery call: send proposal within 4 hours. Not tomorrow. Same day.</li>
+        </ul></div>
+        <div class="al alg"><strong>Target by Day 10</strong>At least 2 discovery calls completed. At least 1 proposal sent. If no calls yet - increase Loom volume to 3/day.</div>
+      </div>
+    </div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAYS 11-14</div><div class="day-title">Close First Client + Hire Editor + Continue Machine</div></div>
+        <span class="t tgrn">Target: First client signed, editor hired</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">CLOSE SEQUENCE</div><ul class="hb-tasks">
+          <li>Follow up on all sent proposals. Day 3 follow-up: "Checking in on the proposal. Any questions?" Day 7: "Last message - is the timing off or was there something in the proposal that didn't feel right?"</li>
+          <li>For active conversations at the negotiation stage: see Objections section. Know your floor ($4,500) and do not go below it.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">WHEN FIRST CLIENT SIGNS - HIRE IMMEDIATELY</div><ul class="hb-tasks">
+          <li>Post on Upwork within 24 hours of first payment: "Looking for an experienced Instagram Reel editor. Must know: fast-paced cuts, text motion design, CapCut/Premiere. Delivery within 48 hours. Show me 3 recent examples." Budget: $80-100 per reel.</li>
+          <li>Interview 3 candidates. Pay for 2 test reels from each finalist. Pick the best one.</li>
+          <li>You are now a creative director - not an editor. Your job changes the moment that payment clears.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">DAILY - KEEP THE MACHINE RUNNING</div><ul class="hb-tasks">
+          <li>1 reel posted per day. Outreach daily (5 voice DMs + follow-ups). Loom 1-2/day to hottest leads.</li>
+          <li>Sales learning: 1 hour/day. You are preparing for the next 2-3 closes this month.</li>
+        </ul></div>
+        <div class="al algn"><strong>End of Week 2 (Day 14)</strong>First client signed and paying. Editor hired and receiving first brief. You have done 50+ leads, 15+ Looms, 5+ discovery calls. 10+ reels live on your page.</div>
+      </div>
+    </div>
+
+    <div class="week-label">Week 3 - Deliver + Close 2nd Client</div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAYS 15-21</div><div class="day-title">Client 1 Delivery Running + Close Client 2</div></div>
+        <span class="t tg">Target: Client 2 signed, delivery systematized</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">CLIENT 1 DELIVERY (1-2 HOURS/DAY)</div><ul class="hb-tasks">
+          <li>Run the kickoff call (see Delivery section). Build their content calendar. Write first 6 scripts. Brief the editor.</li>
+          <li>Review editor's first 2 submissions. Give specific feedback. Approve or request revision. Post on schedule.</li>
+          <li>Two 10-15 min check-in calls with client this week (Wednesday + Friday). Keep them feeling momentum.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">OUTREACH (2 HOURS/DAY)</div><ul class="hb-tasks">
+          <li>Keep sending 5 voice DMs/day. Keep Loom pipeline at 2/day. Discovery calls when booked.</li>
+          <li>You have now been outreaching for 2 weeks - your conversion rate is improving. Do not stop.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">CONTENT (1-1.5 HOURS/DAY)</div><ul class="hb-tasks">
+          <li>1 new reel per day. 15 min to film. 15 min to edit. The content machine keeps running even while you deliver to clients.</li>
+          <li>Use client work as content fodder: "Here's what I noticed when auditing a founder's Instagram this week..." (anonymized)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="week-label">Week 4 - Scale to 3 Clients</div>
+
+    <div class="day-block">
+      <div class="day-hd">
+        <div><div class="day-num">DAYS 22-30</div><div class="day-title">3 Clients Active + Systems Optimized</div></div>
+        <span class="t tgrn">Target: $15K-$30K MRR, 3 clients active</span>
+      </div>
+      <div class="day-bd">
+        <div class="hblock"><div class="hb-time">THE DAILY SPLIT</div><ul class="hb-tasks">
+          <li><strong>1.5 hrs - Delivery oversight:</strong> Review editor output. Brief next batch. Client check-in messages. Approve content before posting.</li>
+          <li><strong>1.5 hrs - Outreach:</strong> Voice DMs, follow-ups, Looms. Discovery calls as booked.</li>
+          <li><strong>1 hr - Content:</strong> Script + film 1 reel. Posted at 6:30 PM.</li>
+          <li><strong>1 hr - Strategy/Sales:</strong> Proposal writing. Discovery call prep. Sales learning.</li>
+          <li><strong>1 hr - Systems:</strong> Tighten what is breaking. Document anything you repeated more than twice.</li>
+        </ul></div>
+        <div class="hblock"><div class="hb-time">END OF 30 DAYS - WHAT SUCCESS LOOKS LIKE</div><ul class="hb-tasks">
+          <li>3 paying clients at $5K-$10K/month = $15K-$30K MRR</li>
+          <li>1 editor fully onboarded and running deliveries</li>
+          <li>25+ reels posted on your own page</li>
+          <li>Lead tracker has 100+ leads with full touch history</li>
+          <li>Delivery system is predictable - client 1's month 1 report done</li>
+          <li>You have not edited a single video since client 1 signed</li>
+        </ul></div>
+        <div class="al algn"><strong>The Checkpoint</strong>If you are below $15K MRR at Day 30: you are not messaging enough people or your Loom quality needs improvement. Double outreach volume for Days 31-45. If you are at $15K+: stay on the machine. Do not celebrate by slowing down. Month 2 is where it compounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT ENGINE -->
+  <div class="sec" id="sec-content">
+    <div class="ey">Content Production</div>
+    <div class="st">THE 15-MIN <span class="accent">REEL SYSTEM</span></div>
+    <p class="sub">High quality does not equal heavy editing. High quality means nail the hook, nail the audio, nail the framing, keep cuts at 2 seconds. That is it. One reel in 15-20 minutes from setup to export.</p>
+    <div class="al alg"><strong>The Core Insight</strong>The reels that go viral are not the most edited. They are the most clear. A great talking-head reel with good audio, strong hook text on frame 1, a cut every 1.5-2 seconds, and a muted background music track will outperform a heavily edited montage every single time for authority content.</div>
+    <div class="g2" style="margin-bottom:2px">
+      <div class="c cg">
+        <div class="ct">The 15-Minute Production Workflow</div>
+        <div class="step"><div class="sn">1</div><div class="sb2"><div class="stitle">Setup (2 min)</div><div class="sdesc">Dark background (cloth or wall). Ring light on, 45 above. Lapel mic clipped at chest. Phone on tripod at eye level. CapCut open. This setup takes 2 minutes once it has been done once.</div></div></div>
+        <div class="step"><div class="sn">2</div><div class="sb2"><div class="stitle">Film (5-6 min)</div><div class="sdesc">Read the script 2x before filming. Hit record. Deliver it naturally - not read, not memorized. If you stumble: keep rolling, pause 2 seconds, restart the sentence. Edit out the stumble. 2-3 takes max.</div></div></div>
+        <div class="step"><div class="sn">3</div><div class="sb2"><div class="stitle">Edit in CapCut (7-8 min)</div><div class="sdesc">Import best take. Cut every pause over 0.3 seconds. Every 1.5-2 seconds, there should be a meaningful cut or zoom. Add text hook on frame 1. Auto-captions: clean up errors. Color grade: lift shadows +10, contrast +8, saturation -5. Music: lo-fi ambient at 8% volume. Export.</div></div></div>
+      </div>
+      <div class="c cb">
+        <div class="ct">What Makes a Reel Go Viral (5 Elements)</div>
+        <ul class="cl">
+          <li><div><strong>Frame 1 text hook</strong> - The first frame must show text that stops the scroll on mute. "The most dangerous thing for a founder..." on screen immediately. 85% of people watch muted.</div></li>
+          <li><div><strong>Cut every 1.5-2 seconds</strong> - This is the single biggest retention driver. Every cut is a micro-reset. The brain re-engages. Do not cut on dead air - cut on energy words.</div></li>
+          <li><div><strong>Audio quality first</strong> - Lapel mic is better than any ambient solution. If the audio is bad, nothing else saves the reel. This is non-negotiable.</div></li>
+          <li><div><strong>Zoom punches on key words</strong> - At the 2-3 most important moments in the script, zoom in slightly (CapCut: keyframe scale from 100% to 105%). Creates emphasis without B-roll.</div></li>
+          <li><div><strong>Sound design</strong> - One subtle sound effect on key transitions or the opening frame. CapCut free library has these. 1 second of a "whoosh" or "click" when text appears = significantly higher retention.</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="c">
+      <div class="ct">The Reel Posting Schedule (30 Days)</div>
+      <div class="tw"><table>
+        <tr><th>Period</th><th>Reels/Week</th><th>Content Type</th><th>Why</th></tr>
+        <tr><td><strong style="color:var(--gold)">Week 1 (Days 1-7)</strong></td><td>6 (batch)</td><td>Authority foundation posts</td><td>Build profile credibility before outreach hits volume</td></tr>
+        <tr><td><strong style="color:var(--gold)">Week 2 (Days 8-14)</strong></td><td>5-7</td><td>Hook breakdowns + process reveals</td><td>Passive outreach - people receive voice DMs and check your profile</td></tr>
+        <tr><td><strong style="color:var(--gold)">Week 3-4 (Days 15-30)</strong></td><td>4-5</td><td>Mix: authority + personal + proof</td><td>Maintain presence while delivery starts. Do not drop below 4/week.</td></tr>
+      </table></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const PAGES = {
+  home: 'sec-home', vision: 'sec-vision', offer: 'sec-offer', war: 'sec-war',
+  content: 'sec-content', ideas: 'sec-ideas', outreach: 'sec-outreach', loom: 'sec-loom',
+  discovery: 'sec-discovery', objections: 'sec-objections', close: 'sec-close',
+  saleslearn: 'sec-saleslearn', setup: 'sec-setup', auto: 'sec-auto', onboard: 'sec-onboard',
+  hiring: 'sec-hiring', delivery: 'sec-delivery', daily: 'sec-daily'
+};
+
+const LABELS = {
+  home: 'COMMAND CENTER', vision: 'THE $1M VISION', offer: 'THE OFFER',
+  war: '30-DAY WAR PLAN', content: '15-MIN REEL SYSTEM', ideas: 'CONTENT IDEAS JOURNAL',
+  outreach: 'VOICE FLOW', loom: 'THE FEAR LOOM', discovery: 'DISCOVERY CALL',
+  objections: 'OBJECTIONS + NEGOTIATION', close: 'THE CLOSE', saleslearn: 'SALES LEARNING',
+  setup: 'FAST SETUP', auto: 'AUTOMATION FLOW', onboard: 'CLIENT ONBOARDING',
+  hiring: 'HIRING SYSTEM', delivery: 'DELIVERY OS', daily: 'DAILY EXECUTION'
+};
+
+function go(key, el) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.ni.on').forEach(n => n.classList.remove('on'));
+  if(el) el.classList.add('on');
+  const sec = document.getElementById(PAGES[key]);
+  if(sec) sec.classList.add('on');
+  document.getElementById('bc').textContent = 'NORTHFIELD OS / ' + (LABELS[key] || key.toUpperCase());
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Sidebar click handler
+document.querySelectorAll('.ni').forEach(item => {
+  item.addEventListener('click', function() {
+    const key = this.dataset.key;
+    if(key && PAGES[key]) go(key, this);
+  });
+});
+
+// Accordion
+function tog(h) {
+  const b = h.nextElementSibling;
+  if(b) b.classList.toggle('open');
+}
+
+document.querySelectorAll('.day-hd').forEach(hd => {
+  hd.addEventListener('click', () => tog(hd));
+});
+</script>
+
+</body>
+</html>
